@@ -10,6 +10,12 @@ import heapq
 def shortest_path(source, destination):
     graph = {}
     print("==start sortest path")
+    
+        # for edge in Edge.objects.select_related('source', 'destination').all():
+        # graph.setdefault(edge.source_id, []).append((edge.destination_id, edge.latency))
+    
+    
+    
     for edge in Edge.objects.select_related('source', 'destination').all():
         graph.setdefault(edge.source_id, []).append((edge.destination_id, edge.latency))
 
@@ -22,6 +28,9 @@ def shortest_path(source, destination):
         print(latency, node_id, path,"latency, node_id, path===========")
         if node_id == destination.id:
             return latency, path
+
+
+        # latency, node_id, path = heapq.heappush(queue)
 
         if latency > best.get(node_id, float('inf')):
             continue
