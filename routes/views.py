@@ -9,23 +9,19 @@ import heapq
 
 def shortest_path(source, destination):
     graph = {}
-    print("==start sortest path")
-    
         # for edge in Edge.objects.select_related('source', 'destination').all():
         # graph.setdefault(edge.source_id, []).append((edge.destination_id, edge.latency))
     
-    
-    
+
     for edge in Edge.objects.select_related('source', 'destination').all():
         graph.setdefault(edge.source_id, []).append((edge.destination_id, edge.latency))
 
     queue = [(0, source.id, [source.name])]
-    print("=====que",queue)
     best = {source.id: 0}
 
     while queue:
         latency, node_id, path = heapq.heappop(queue)
-        print(latency, node_id, path,"latency, node_id, path===========")
+        print(latency, node_id, path,"latency, node_id, path")
         if node_id == destination.id:
             return latency, path
 
@@ -37,7 +33,7 @@ def shortest_path(source, destination):
 
         for next_id, edge_latency in graph.get(node_id, []):
             new_latency = latency + edge_latency
-            print(new_latency,"===new_latency")
+            print(new_latency,"new_latency")
             if new_latency >= best.get(next_id, float('inf')):
                 continue
 
@@ -56,7 +52,7 @@ class NodeListCreateView(APIView):
 
 
     def get(self, request):
-        print("=========request",request)
+        print("request",request)
         # return Response(serializer.data, status=status.HTTP_201_CREATED)
         nodes = Node.objects.all().order_by('id')
         print(nodes)
@@ -85,7 +81,7 @@ class NodeDeleteView(APIView):
         
         try:
             node = Node.objects.get(pk=pk)
-            print(node,"================node found")
+            print(node,"=node found")
         except Node.DoesNotExist:
             return Response({'error': 'node is not avaiable'}, status=status.HTTP_404_NOT_FOUND)
 
@@ -117,7 +113,7 @@ class EdgeDeleteView(APIView):
     def delete(self, request, pk):
         
         try:
-            print("==============pk",pk)
+            print("pk",pk)
             edge = Edge.objects.get(pk=pk)
         except Edge.DoesNotExist:
             return Response({'error': 'reqested edges is not avaiable '}, status=status.HTTP_404_NOT_FOUND)
